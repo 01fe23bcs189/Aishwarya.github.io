@@ -132,65 +132,35 @@ int main() {
 
 //Code for job distribution optimisation using prime algorithm
 #include <iostream>
-#include <vector>
-#include <climits>
+#include <string>
 using namespace std;
 
-int findMinVertex(vector<int> &weights, vector<bool> &inMST, int nodes) {
-    int minVertex = -1;
-    for (int i = 0; i < nodes; i++) {
-        if (!inMST[i] && (minVertex == -1 || weights[i] < weights[minVertex])) {
-            minVertex = i;
-        }
-    }
-    return minVertex;
-}
-
-void primsAlgorithm(vector<vector<pair<int, int>>> &graph, int nodes) {
-    vector<int> parent(nodes, -1);
-    vector<int> weights(nodes, INT_MAX);
-    vector<bool> inMST(nodes, false);
-
-    weights[0] = 0;
-
-    for (int i = 0; i < nodes - 1; i++) {
-        int minVertex = findMinVertex(weights, inMST, nodes);
-        inMST[minVertex] = true;
-
-        for (const auto &neighbor : graph[minVertex]) {
-            int adjVertex = neighbor.first;
-            int edgeWeight = neighbor.second;
-
-            if (!inMST[adjVertex] && edgeWeight < weights[adjVertex]) {
-                weights[adjVertex] = edgeWeight;
-                parent[adjVertex] = minVertex;
-            }
-        }
-    }
-
-    cout << "Minimum Spanning Tree (MST):\n";
-    for (int i = 1; i < nodes; i++) {
-        cout << parent[i] << " - " << i << " : " << weights[i] << endl;
-    }
+// Function to check if two addresses are the same
+bool isSameAddress(const string &employeeAddress, const string &industryAddress) {
+    return employeeAddress == industryAddress;
 }
 
 int main() {
-    int nodes, edges;
-    cin >> nodes >> edges;
+    string employeeAddress, industryAddress;
+    string jobLocation;
 
-    vector<vector<pair<int, int>>> graph(nodes);
+    // Taking inputs from the user
+    cout << "Enter the address of the employee: ";
+    getline(cin, employeeAddress);
+    cout << "Enter the address of the industry: ";
+    getline(cin, industryAddress);
 
-    for (int i = 0; i < edges; i++) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        graph[u].push_back({v, w});
-        graph[v].push_back({u, w});
+    // Check if the addresses match
+    if (isSameAddress(employeeAddress, industryAddress)) {
+        jobLocation = industryAddress;
+        cout << "Job location assigned: " << jobLocation << endl;
+    } else {
+        cout << "Addresses do not match. No job location assigned." << endl;
     }
 
-    primsAlgorithm(graph, nodes);
-
-    return 0;
+    return 0;
 }
+
 //Code for job distribution optimisation using floyds algorithm
 Here is the C++ code for Job Distribution Optimization using Floyd's Algorithm:
 
