@@ -162,56 +162,29 @@ int main() {
 }
 
 //Code for job distribution optimisation using floyds algorithm
-Here is the C++ code for Job Distribution Optimization using Floyd's Algorithm:
-
 #include <iostream>
-#include <vector>
-#include <climits>
+#include <string>
 using namespace std;
 
-#define INF INT_MAX
-
-void floydWarshall(vector<vector<int>>& graph, int n) {
-    vector<vector<int>> dist = graph;
-
-    for (int k = 0; k < n; ++k) {
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j]) {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                }
-            }
-        }
-    }
-
-    cout << "Optimized Job Distribution Matrix:\n";
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            if (dist[i][j] == INF)
-                cout << "INF ";
-            else
-                cout << dist[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
 int main() {
-    int n;
-    cout << "Enter the number of locations: ";
-    cin >> n;
+    // Input addresses for employee and industry
+    string employeeAddress, industryAddress;
 
-    vector<vector<int>> graph(n, vector<int>(n));
-    cout << "Enter the adjacency matrix (use " << INF << " for no direct route):\n";
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            cin >> graph[i][j];
-        }
+    cout << "Enter the address of the employee: ";
+    getline(cin, employeeAddress);  // Takes full address input for employee
+
+    cout << "Enter the address of the industry: ";
+    getline(cin, industryAddress);  // Takes full address input for industry
+
+    // Check if the employee and industry addresses match
+    if (employeeAddress == industryAddress) {
+        cout << "Job distributed: The employee's address matches the industry's address.\n";
+    } else {
+        cout << "Job not distributed: The addresses do not match.\n";
     }
 
-    floydWarshall(graph, n);
-
-    return 0;
+    return 0;
 }
+
 
 
