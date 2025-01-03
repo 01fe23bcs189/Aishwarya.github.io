@@ -1,6 +1,5 @@
 //Job matching code for Rabin karp
 #include <iostream>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -42,32 +41,49 @@ bool rabinKarp(const string &text, const string &pattern) {
     return false;
 }
 
+bool matchSkills(const string &jobRequirement, const string &candidateSkills) {
+    // Split jobRequirement into individual skills and check each one
+    size_t start = 0, end;
+    while ((end = jobRequirement.find(' ', start)) != string::npos) {
+        string requiredSkill = jobRequirement.substr(start, end - start);
+        if (!rabinKarp(candidateSkills, requiredSkill)) {
+            return false; // If any required skill is missing, return false
+        }
+        start = end + 1;
+    }
+
+    // Check the last skill in the requirement list
+    string lastSkill = jobRequirement.substr(start);
+    return rabinKarp(candidateSkills, lastSkill);
+}
+
 int main() {
-    int n, m;
-    cin >> n;
-    cin.ignore();
-    vector<string> jobSeekersSkills(n);
-    for (int i = 0; i < n; i++) {
-        getline(cin, jobSeekersSkills[i]);
-    }
+    string jobRequirement = "C++ Java SQL";
+    cout << "Job available for candidates with skills: " << jobRequirement << endl;
 
-    cin >> m;
-    cin.ignore();
-    vector<string> jobRequirements(m);
-    for (int i = 0; i < m; i++) {
-        getline(cin, jobRequirements[i]);
-    }
+    while (true) {
+        string skills;
+        cout << "Please apply for the job by entering your skills (or type 'exit' to stop): ";
+        getline(cin, skills);
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            if (rabinKarp(jobSeekersSkills[i], jobRequirements[j])) {
-                cout << "Job Seeker " << i + 1 << " matches Job " << j + 1 << endl;
-            }
+        if (skills == "exit") {
+            cout << "Thank you for applying!" << endl;
+            break;
+        }
+
+        if (matchSkills(jobRequirement, skills)) {
+            cout << "Congratulations! Your skills match the job requirement." << endl;
+        } else {
+            cout << "Sorry, your skills do not match the job requirement." << endl;
         }
     }
 
-    return 0;
+    return 0;
 }
+
+
+ 
+    
 
 //Code for job distribution optimisation using kruskal algorithm
 #include <iostream>
