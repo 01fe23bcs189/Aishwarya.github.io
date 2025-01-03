@@ -88,80 +88,48 @@ int main() {
 //Code for job distribution optimisation using kruskal algorithm
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <string>
 using namespace std;
 
-struct Edge {
-    int u, v, weight;
-};
-
-bool compare(Edge a, Edge b) {
-    return a.weight < b.weight;
-}
-
-class DisjointSet {
-private:
-    vector<int> parent, rank;
-public:
-    DisjointSet(int n) {
-        parent.resize(n);
-        rank.resize(n, 0);
-        for (int i = 0; i < n; i++) parent[i] = i;
-    }
-
-    int find(int u) {
-        if (u != parent[u])
-            parent[u] = find(parent[u]);
-        return parent[u];
-    }
-
-    void unite(int u, int v) {
-        int rootU = find(u);
-        int rootV = find(v);
-        if (rootU != rootV) {
-            if (rank[rootU] > rank[rootV]) {
-                parent[rootV] = rootU;
-            } else if (rank[rootU] < rank[rootV]) {
-                parent[rootU] = rootV;
-            } else {
-                parent[rootV] = rootU;
-                rank[rootU]++;
-            }
+// Function to check and assign job location
+void assignJobs(const vector<string>& employeeAddresses, const string& industryAddress) {
+    cout << "\nJob Assignment Results:\n";
+    for (int i = 0; i < employeeAddresses.size(); i++) {
+        if (employeeAddresses[i] == industryAddress) {
+            cout << "Employee " << i + 1 << ": Job Location Assigned (Address: " << employeeAddresses[i] << ")\n";
+        } else {
+            cout << "Employee " << i + 1 << ": No Job Location Assigned (Address: " << employeeAddresses[i] << ")\n";
         }
     }
-};
+}
 
 int main() {
-    int nodes, edges;
-    cin >> nodes >> edges;
+    int numEmployees;
+    string industryAddress;
 
-    vector<Edge> graph(edges);
-    for (int i = 0; i < edges; i++) {
-        cin >> graph[i].u >> graph[i].v >> graph[i].weight;
+    // Input the industry address
+    cout << "Enter the industry address: ";
+    getline(cin, industryAddress);
+
+    // Input the number of employees
+    cout << "Enter the number of employees: ";
+    cin >> numEmployees;
+    cin.ignore(); // To consume the newline character after the number input
+
+    // Input employee addresses
+    vector<string> employeeAddresses(numEmployees);
+    cout << "Enter the addresses of employees:\n";
+    for (int i = 0; i < numEmployees; i++) {
+        cout << "Address of Employee " << i + 1 << ": ";
+        getline(cin, employeeAddresses[i]);
     }
 
-    sort(graph.begin(), graph.end(), compare);
+    // Assign jobs based on address matching
+    assignJobs(employeeAddresses, industryAddress);
 
-    DisjointSet ds(nodes);
-    vector<Edge> mst;
-    int totalWeight = 0;
-
-    for (const auto &edge : graph) {
-        if (ds.find(edge.u) != ds.find(edge.v)) {
-            ds.unite(edge.u, edge.v);
-            mst.push_back(edge);
-            totalWeight += edge.weight;
-        }
-    }
-
-    cout << "Minimum Spanning Tree (MST):\n";
-    for (const auto &edge : mst) {
-        cout << edge.u << " - " << edge.v << " : " << edge.weight << endl;
-    }
-    cout << "Total Weight: " << totalWeight << endl;
-
-    return 0;
+    return 0;
 }
+
 //Code for job distribution optimisation using prime algorithm
 #include <iostream>
 #include <vector>
